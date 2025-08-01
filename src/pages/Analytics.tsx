@@ -22,18 +22,7 @@ export const Analytics: React.FC = () => {
     setRequests(allRequests);
   };
 
-  if (currentUser?.role !== 'admin') {
-    return (
-      <Layout>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
-            <p className="text-muted-foreground">You don't have permission to access analytics.</p>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
+  // Analytics is now available for all users
 
   // Calculate analytics data
   const totalRequests = requests.length;

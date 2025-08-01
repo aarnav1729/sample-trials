@@ -17,15 +17,17 @@ export interface MaterialRequest {
   purpose: string;
   bisRequired: boolean;
   bisCost?: number;
+  bisCurrency?: 'USD' | 'INR' | 'YUAN';
   bisCostBorneBy?: string;
   bisSplitSupplier?: number;
   bisSplitPremier?: number;
   iecRequired: boolean;
   iecCost?: number;
+  iecCurrency?: 'USD' | 'INR' | 'YUAN';
   iecCostBorneBy?: string;
   iecSplitSupplier?: number;
   iecSplitPremier?: number;
-  status: 'pending_cmk' | 'approved_trial' | 'approved_pilot' | 'rejected' | 'pending_ppc' | 'pending_procurement' | 'ordered' | 'delivered' | 'pending_evaluation' | 'completed';
+  status: 'pending_cmk' | 'approved_trial' | 'approved_pilot' | 'rejected' | 'pending_ppc' | 'pending_procurement' | 'ordered' | 'delivered' | 'pending_evaluation' | 'pending_final_cmk' | 'completed';
   requestorId: string;
   plant?: string;
   cmkDecision?: {
@@ -63,6 +65,13 @@ export interface MaterialRequest {
     report?: string;
     updatedBy: string;
     updatedAt: string;
+  };
+  finalCmkReview?: {
+    decision: 'approved' | 'rejected';
+    reason?: string;
+    comments?: string;
+    reviewedBy: string;
+    reviewedAt: string;
   };
   auditTrail: AuditEntry[];
 }

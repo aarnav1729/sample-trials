@@ -11,12 +11,12 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const defaultUsers: User[] = [
-  { id: '1', username: 'aarnav', password: 'aarnav', role: 'requestor', name: 'Aarnav (Requestor)' },
+  { id: '1', username: 'praful', password: 'praful', role: 'requestor', name: 'Praful (Requestor)' },
   { id: '2', username: 'cmk', password: 'cmk', role: 'cmk', name: 'CMK (Plant Head)' },
   { id: '3', username: 'ppc', password: 'ppc', role: 'ppc', name: 'PPC' },
   { id: '4', username: 'proc', password: 'proc', role: 'procurement', name: 'Procurement' },
   { id: '5', username: 'eval', password: 'eval', role: 'evaluation', name: 'Evaluation Team' },
-  { id: '6', username: 'admin', password: 'admin', role: 'admin', name: 'Admin' },
+  { id: '6', username: 'aarnav', password: 'aarnav', role: 'admin', name: 'Aarnav (Admin)' },
 ];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

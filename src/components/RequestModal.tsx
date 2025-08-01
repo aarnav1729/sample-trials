@@ -251,7 +251,7 @@ export const RequestModal: React.FC<RequestModalProps> = ({
 
             {formData.bisRequired && (
               <div className="space-y-4 ml-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="bisCost">BIS Cost</Label>
                     <Input
@@ -262,6 +262,24 @@ export const RequestModal: React.FC<RequestModalProps> = ({
                       placeholder="Enter BIS cost"
                       disabled={isReadOnly}
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bisCurrency">Currency</Label>
+                    <Select 
+                      value={formData.bisCurrency || ''} 
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, bisCurrency: value as 'USD' | 'INR' | 'YUAN' }))}
+                      disabled={isReadOnly}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="INR">INR</SelectItem>
+                        <SelectItem value="YUAN">YUAN</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-2">
@@ -328,7 +346,7 @@ export const RequestModal: React.FC<RequestModalProps> = ({
 
             {formData.iecRequired && (
               <div className="space-y-4 ml-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="iecCost">IEC Cost</Label>
                     <Input
@@ -339,6 +357,24 @@ export const RequestModal: React.FC<RequestModalProps> = ({
                       placeholder="Enter IEC cost"
                       disabled={isReadOnly}
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="iecCurrency">Currency</Label>
+                    <Select 
+                      value={formData.iecCurrency || ''} 
+                      onValueChange={(value) => setFormData(prev => ({ ...prev, iecCurrency: value as 'USD' | 'INR' | 'YUAN' }))}
+                      disabled={isReadOnly}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select currency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="INR">INR</SelectItem>
+                        <SelectItem value="YUAN">YUAN</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-2">
