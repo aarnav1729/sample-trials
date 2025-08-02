@@ -19,9 +19,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   const navigationItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: Home, roles: ['requestor', 'cmk', 'ppc', 'procurement', 'evaluation', 'admin'] },
-    { path: '/users', label: 'User Management', icon: Users, roles: ['admin'] },
-    { path: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'] },
+    { path: '/dashboard', label: 'Dashboard', icon: Home, roles: ['requestor', 'cmk', 'ppc', 'procurement', 'stores', 'evaluation', 'admin'] },
+    { path: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['requestor', 'cmk', 'ppc', 'procurement', 'stores', 'evaluation', 'admin'] },
+    { path: '/user-management', label: 'User Management', icon: Users, roles: ['admin'] },
   ];
 
   const filteredNavigation = navigationItems.filter(item => 

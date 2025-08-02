@@ -11,12 +11,13 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const defaultUsers: User[] = [
-  { id: '1', username: 'praful', password: 'praful', role: 'requestor', name: 'Praful (Requestor)' },
-  { id: '2', username: 'cmk', password: 'cmk', role: 'cmk', name: 'CMK (Plant Head)' },
-  { id: '3', username: 'ppc', password: 'ppc', role: 'ppc', name: 'PPC' },
-  { id: '4', username: 'proc', password: 'proc', role: 'procurement', name: 'Procurement' },
-  { id: '5', username: 'eval', password: 'eval', role: 'evaluation', name: 'Evaluation Team' },
-  { id: '6', username: 'aarnav', password: 'aarnav', role: 'admin', name: 'Aarnav (Admin)' },
+  { id: '1', username: 'praful', password: 'praful', role: 'requestor', name: 'Praful Kumar' },
+  { id: '2', username: 'cmk', password: 'cmk', role: 'cmk', name: 'Chandramauli Kumar' },
+  { id: '3', username: 'ppc', password: 'ppc', role: 'ppc', name: 'PPC Team' },
+  { id: '4', username: 'proc', password: 'proc', role: 'procurement', name: 'Procurement Team' },
+  { id: '5', username: 'stores', password: 'stores', role: 'stores', name: 'Stores Team' },
+  { id: '6', username: 'eval', password: 'eval', role: 'evaluation', name: 'Evaluation Team' },
+  { id: '7', username: 'aarnav', password: 'aarnav', role: 'admin', name: 'Aarnav Admin' }
 ];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

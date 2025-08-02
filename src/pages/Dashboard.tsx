@@ -9,7 +9,8 @@ import { PPCModal } from '@/components/PPCModal';
 import { ProcurementModal } from '@/components/ProcurementModal';
 import { EvaluationModal } from '@/components/EvaluationModal';
 import { FinalCMKModal } from '@/components/FinalCMKModal';
-import { DataTable } from '@/components/DataTable';
+import { StoresModal } from '@/components/StoresModal';
+import { DetailedDataTable } from '@/components/DetailedDataTable';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 
@@ -17,7 +18,7 @@ export const Dashboard: React.FC = () => {
   const { user: currentUser } = useAuth();
   const [requests, setRequests] = useState<MaterialRequest[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<MaterialRequest | null>(null);
-  const [modalType, setModalType] = useState<'create' | 'edit' | 'view' | 'cmk' | 'ppc' | 'procurement' | 'evaluation' | 'final_cmk' | null>(null);
+  const [modalType, setModalType] = useState<'create' | 'edit' | 'view' | 'cmk' | 'ppc' | 'procurement' | 'stores' | 'evaluation' | 'final_cmk' | null>(null);
 
   useEffect(() => {
     loadRequests();
@@ -46,8 +47,11 @@ export const Dashboard: React.FC = () => {
     } else if (currentUser?.role === 'procurement' && 
                (request.status === 'pending_procurement' || request.status === 'ordered')) {
       setModalType('procurement');
+    } else if (currentUser?.role === 'stores' && 
+               (request.status === 'delivered' || request.status === 'pending_stores')) {
+      setModalType('stores');
     } else if (currentUser?.role === 'evaluation' && 
-               (request.status === 'delivered' || request.status === 'pending_evaluation')) {
+               (request.status === 'received' || request.status === 'pending_evaluation')) {
       setModalType('evaluation');
     } else {
       setModalType('view');
@@ -74,8 +78,10 @@ export const Dashboard: React.FC = () => {
         return requests.filter(r => r.status === 'pending_ppc').length;
       case 'procurement':
         return requests.filter(r => r.status === 'pending_procurement' || r.status === 'ordered').length;
+      case 'stores':
+        return requests.filter(r => r.status === 'delivered' || r.status === 'pending_stores').length;
       case 'evaluation':
-        return requests.filter(r => r.status === 'delivered' || r.status === 'pending_evaluation').length;
+        return requests.filter(r => r.status === 'received' || r.status === 'pending_evaluation').length;
       default:
         return 0;
     }
@@ -100,7 +106,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Enhanced Data Table */}
-        <DataTable 
+        <DetailedDataTable 
           requests={requests}
           currentUser={currentUser}
           onView={handleView}
@@ -112,7 +118,7 @@ export const Dashboard: React.FC = () => {
           request={selectedRequest}
           isOpen={modalType === 'create' || modalType === 'edit' || modalType === 'view'}
           onClose={handleModalClose}
-          onUpdate={loadRequests}
+          onSave={loadRequests}
           mode={modalType === 'create' ? 'create' : modalType === 'edit' ? 'edit' : 'view'}
         />
 
@@ -120,26 +126,33 @@ export const Dashboard: React.FC = () => {
           request={selectedRequest}
           isOpen={modalType === 'cmk'}
           onClose={handleModalClose}
-          onUpdate={loadRequests}
+          onSave={loadRequests}
         />
 
         <PPCModal
           request={selectedRequest}
           isOpen={modalType === 'ppc'}
           onClose={handleModalClose}
-          onUpdate={loadRequests}
+          onSave={loadRequests}
         />
 
         <ProcurementModal
           request={selectedRequest}
           isOpen={modalType === 'procurement'}
           onClose={handleModalClose}
-          onUpdate={loadRequests}
+          onSave={loadRequests}
         />
 
         <EvaluationModal
           request={selectedRequest}
           isOpen={modalType === 'evaluation'}
+          onClose={handleModalClose}
+          onSave={loadRequests}
+        />
+
+        <StoresModal
+          request={selectedRequest}
+          isOpen={modalType === 'stores'}
           onClose={handleModalClose}
           onUpdate={loadRequests}
         />

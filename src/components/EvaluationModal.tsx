@@ -103,7 +103,7 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
       }
 
       updatedRequest = {
-        status: 'completed',
+        status: 'pending_final_cmk',
         evaluationData: {
           ...request.evaluationData,
           received: true,
@@ -122,7 +122,7 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
 
       toast({
         title: "Evaluation Complete",
-        description: "Evaluation report has been submitted successfully.",
+        description: "Evaluation report submitted and sent to CMK for final review.",
       });
     }
 
@@ -172,11 +172,12 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
               <div><strong>Plant:</strong> {request.plant || 'Not specified'}</div>
             </div>
             
-            {request.procurementData?.deliveredAt && (
+            {request.storesData && (
               <div className="border-l-4 border-green-500 pl-4">
-                <strong>Delivery Status:</strong>
+                <strong>Stores Status:</strong>
                 <div className="text-sm text-muted-foreground">
-                  Delivered to factory on: {new Date(request.procurementData.deliveredAt).toLocaleDateString()}
+                  Material received by: {request.storesData.receivedBy}<br/>
+                  Received on: {new Date(request.storesData.updatedAt).toLocaleDateString()}
                 </div>
               </div>
             )}
@@ -202,7 +203,7 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({
                   <SelectValue placeholder="Select action" />
                 </SelectTrigger>
                 <SelectContent>
-                  {request.status === 'delivered' && (
+                  {request.status === 'received' && (
                     <SelectItem value="receive">Mark as Received</SelectItem>
                   )}
                   {request.status === 'pending_evaluation' && (

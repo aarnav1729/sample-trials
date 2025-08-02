@@ -2,7 +2,7 @@ export interface User {
   id: string;
   username: string;
   password: string;
-  role: 'requestor' | 'cmk' | 'ppc' | 'procurement' | 'evaluation' | 'admin';
+  role: 'requestor' | 'cmk' | 'ppc' | 'procurement' | 'stores' | 'evaluation' | 'admin';
   name: string;
 }
 
@@ -27,7 +27,7 @@ export interface MaterialRequest {
   iecCostBorneBy?: string;
   iecSplitSupplier?: number;
   iecSplitPremier?: number;
-  status: 'pending_cmk' | 'approved_trial' | 'approved_pilot' | 'rejected' | 'pending_ppc' | 'pending_procurement' | 'ordered' | 'delivered' | 'pending_evaluation' | 'pending_final_cmk' | 'completed';
+  status: 'pending_cmk' | 'approved_trial' | 'approved_pilot' | 'rejected' | 'pending_ppc' | 'pending_procurement' | 'ordered' | 'delivered' | 'pending_stores' | 'received' | 'pending_evaluation' | 'pending_final_cmk' | 'completed';
   requestorId: string;
   plant?: string;
   cmkDecision?: {

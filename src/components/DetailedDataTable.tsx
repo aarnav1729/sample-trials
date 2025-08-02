@@ -6,16 +6,17 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, Edit2, ArrowUpDown } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Eye, ArrowUpDown } from 'lucide-react';
 
-interface DataTableProps {
+interface DetailedDataTableProps {
   requests: MaterialRequest[];
   currentUser: any;
   onView: (request: MaterialRequest) => void;
   onEdit?: (request: MaterialRequest) => void;
 }
 
-export const DataTable: React.FC<DataTableProps> = ({
+export const DetailedDataTable: React.FC<DetailedDataTableProps> = ({
   requests,
   currentUser,
   onView,
@@ -104,58 +105,124 @@ export const DataTable: React.FC<DataTableProps> = ({
     }
   };
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  const formatDateTime = (dateString: string) => {
+    return new Date(dateString).toLocaleString();
+  };
+
   const RequestTable = ({ data }: { data: MaterialRequest[] }) => (
-    <div className="space-y-4">
-      {data.map((request) => (
-        <Card key={request.id} className={`transition-all duration-200 ${
-          isPendingForUser(request, currentUser?.role) ? 'ring-2 ring-orange-500 bg-orange-50 dark:bg-orange-950' : ''
-        }`}>
-          <CardContent className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="space-y-2">
-                <div className="text-xs text-muted-foreground">Request ID</div>
-                <div className="font-mono text-sm">{request.id}</div>
-                <div className="text-xs text-muted-foreground">Date</div>
-                <div className="text-sm">{new Date(request.dateReceived).toLocaleDateString()}</div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="text-xs text-muted-foreground">Material</div>
-                <div className="font-medium">{request.materialCategory}</div>
-                <div className="text-sm text-muted-foreground line-clamp-2">{request.materialDetails}</div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="text-xs text-muted-foreground">Supplier</div>
-                <div className="text-sm">{request.supplierName}</div>
-                <div className="text-xs text-muted-foreground">Status</div>
-                <Badge variant={getStatusBadgeVariant(request.status)}>
+    <div className="overflow-x-auto">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[120px]">
+              <Button variant="ghost" onClick={() => handleSort('id')} className="h-auto p-0 font-semibold">
+                Request ID <ArrowUpDown className="ml-1 h-3 w-3" />
+              </Button>
+            </TableHead>
+            <TableHead>
+              <Button variant="ghost" onClick={() => handleSort('dateReceived')} className="h-auto p-0 font-semibold">
+                Date <ArrowUpDown className="ml-1 h-3 w-3" />
+              </Button>
+            </TableHead>
+            <TableHead>Material</TableHead>
+            <TableHead>Supplier</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>CMK</TableHead>
+            <TableHead>PPC</TableHead>
+            <TableHead>Procurement</TableHead>
+            <TableHead>Stores</TableHead>
+            <TableHead>Evaluation</TableHead>
+            <TableHead>Final CMK</TableHead>
+            <TableHead className="w-[100px]">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((request) => (
+            <TableRow 
+              key={request.id} 
+              className={isPendingForUser(request, currentUser?.role) ? 'bg-orange-50 dark:bg-orange-950/50' : ''}
+            >
+              <TableCell className="font-mono text-xs">{request.id}</TableCell>
+              <TableCell className="text-sm">{formatDate(request.dateReceived)}</TableCell>
+              <TableCell>
+                <div className="max-w-[200px]">
+                  <div className="font-medium text-sm">{request.materialCategory}</div>
+                  <div className="text-xs text-muted-foreground truncate">{request.materialDetails}</div>
+                </div>
+              </TableCell>
+              <TableCell className="text-sm">{request.supplierName}</TableCell>
+              <TableCell>
+                <Badge variant={getStatusBadgeVariant(request.status)} className="text-xs">
                   {request.status.replace(/_/g, ' ').toUpperCase()}
                 </Badge>
-              </div>
-              
-              <div className="flex flex-col justify-between">
-                <div className="space-y-2">
-                  <div className="text-xs text-muted-foreground">Plant</div>
-                  <div className="text-sm">{request.plant || 'Not assigned'}</div>
-                </div>
-                <div className="flex space-x-2 mt-4">
-                  <Button size="sm" variant="outline" onClick={() => onView(request)}>
-                    <Eye className="h-4 w-4 mr-1" />
-                    View
-                  </Button>
-                  {currentUser?.role === 'requestor' && onEdit && (
-                    <Button size="sm" variant="outline" onClick={() => onEdit(request)}>
-                      <Edit2 className="h-4 w-4 mr-1" />
-                      Edit
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+              </TableCell>
+              <TableCell className="text-xs">
+                {request.cmkDecision ? (
+                  <div>
+                    <div className="font-medium">{request.cmkDecision.decision.toUpperCase()}</div>
+                    <div className="text-muted-foreground">{formatDateTime(request.cmkDecision.approvedAt)}</div>
+                  </div>
+                ) : '-'}
+              </TableCell>
+              <TableCell className="text-xs">
+                {request.ppcData ? (
+                  <div>
+                    <div className="font-medium">PR: {request.ppcData.prNumber}</div>
+                    <div className="text-muted-foreground">{formatDateTime(request.ppcData.enteredAt)}</div>
+                  </div>
+                ) : '-'}
+              </TableCell>
+              <TableCell className="text-xs">
+                {request.procurementData ? (
+                  <div>
+                    <div className="font-medium">
+                      {request.procurementData.deliveredAt ? 'Delivered' : 'Ordered'}
+                    </div>
+                    <div className="text-muted-foreground">
+                      {formatDateTime(request.procurementData.deliveredAt || request.procurementData.updatedAt)}
+                    </div>
+                  </div>
+                ) : '-'}
+              </TableCell>
+              <TableCell className="text-xs">
+                {request.storesData ? (
+                  <div>
+                    <div className="font-medium">By: {request.storesData.receivedBy}</div>
+                    <div className="text-muted-foreground">{formatDateTime(request.storesData.updatedAt)}</div>
+                  </div>
+                ) : '-'}
+              </TableCell>
+              <TableCell className="text-xs">
+                {request.evaluationData ? (
+                  <div>
+                    <div className="font-medium">
+                      {request.evaluationData.report ? 'Completed' : 'Received'}
+                    </div>
+                    <div className="text-muted-foreground">{formatDateTime(request.evaluationData.updatedAt)}</div>
+                  </div>
+                ) : '-'}
+              </TableCell>
+              <TableCell className="text-xs">
+                {request.finalCmkReview ? (
+                  <div>
+                    <div className="font-medium">{request.finalCmkReview.decision.toUpperCase()}</div>
+                    <div className="text-muted-foreground">{formatDateTime(request.finalCmkReview.reviewedAt)}</div>
+                  </div>
+                ) : '-'}
+              </TableCell>
+              <TableCell>
+                <Button size="sm" variant="outline" onClick={() => onView(request)}>
+                  <Eye className="h-3 w-3" />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       {data.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
           No requests found matching your filters.
@@ -224,12 +291,12 @@ export const DataTable: React.FC<DataTableProps> = ({
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="all" className="mt-6">
-          <RequestTable data={filteredAndSortedRequests} />
-        </TabsContent>
-        
         <TabsContent value="pending" className="mt-6">
           <RequestTable data={pendingRequests} />
+        </TabsContent>
+        
+        <TabsContent value="all" className="mt-6">
+          <RequestTable data={filteredAndSortedRequests} />
         </TabsContent>
       </Tabs>
     </div>
