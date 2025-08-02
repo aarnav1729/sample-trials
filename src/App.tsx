@@ -20,7 +20,10 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
   
+  console.log('AppRoutes - isAuthenticated:', isAuthenticated);
+  
   if (!isAuthenticated) {
+    console.log('User not authenticated, showing login');
     return <Login />;
   }
 
@@ -28,7 +31,7 @@ const AppRoutes: React.FC = () => {
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/users" element={<UserManagement />} />
+      <Route path="/user-management" element={<UserManagement />} />
       <Route path="/analytics" element={<Analytics />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
